@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>OSEPP Esp8266 Uploder for Uno</title>
+    <style type="text/css">
+        .select-editable {
+            position: relative;
+            background-color: white;
+            border: solid grey 1px;
+            width: 120px;
+            height: 18px;
+        }
+
+            .select-editable select {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                font-size: 14px;
+                border: none;
+                width: 120px;
+                margin: 0;
+            }
+
+            .select-editable input {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100px;
+                padding: 1px;
+                font-size: 12px;
+                border: none;
+            }
+
+                .select-editable select:focus, .select-editable input:focus {
+                    outline: none;
+                }
+    </style>
+</head>
+<body>
+    <form action="setap" method="post">
+        <table>
+            <tr>
+                <td style="width: 150px">AP SSID</td>
+                <td>
+                    <input name="ssid" type="text" value="%s" /></td>
+            </tr>
+            <tr>
+                <td>AP PSWD</td>
+                <td>
+                    <input name="pswd" type="password" placeholder="new password" /></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input type="submit" value="update" /></td>
+            </tr>
+        </table>
+    </form>
+    <br />
+    <form action="setwf" method="post">
+        <table>
+            <tr>
+                <td style="width: 150px">WIFI SSID</td>
+                <td>
+                    <div class="select-editable">
+                        <select onchange="document.getElementById('wifissid').value=this.value" onclick="this.selectedIndex = - 1">
+%s
+                        </select>
+                        <input id="wifissid" name="ssid" type="text" value="%s" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>WIFI Password</td>
+                <td>
+                    <input name="pswd" type="password" placeholder="Your WIFI Password" /></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input type="submit" value="update" /></td>
+            </tr>
+        </table>
+    </form>
+    <br />
+    <table>
+        <tr>
+            <td style="width: 150px">Local IP</td>
+            <td>%s</td>
+        </tr>
+        <tr>
+            <td>subnetMask</td>
+            <td>%s</td>
+        </tr>
+        <tr>
+            <td>gateway</td>
+            <td>%s</td>
+        </tr>
+        <tr>
+            <td>dns</td>
+            <td>%s</td>
+        </tr>
+    </table>
+</body>
+</html>

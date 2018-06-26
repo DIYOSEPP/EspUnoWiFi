@@ -1,0 +1,282 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <title>Serial Monitor</title>
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .top, .main {
+            width: 100%;
+            position: absolute;
+            overflow: hidden;
+        }
+
+        .top {
+            top: 0;
+            height: 40px;
+        }
+
+        .main {
+            top: 40px;
+            bottom: 0px;
+            overflow: auto;
+        }
+
+        #msgBar {
+            position: absolute;
+            width: 100%;
+            background-color: cadetblue;
+        }
+
+            #msgBar * {
+                user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+            }
+
+            #msgBar ul {
+                display: block;
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+
+                #msgBar ul li {
+                    display: inline;
+                    line-height: 40px;
+                }
+
+            #msgBar li > * {
+                display: inline-block;
+            }
+
+        .svg_icon {
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            transition: fill-opacity 0.5s;
+            -moz-transition: fill-opacity 0.5s; /* Firefox 4 */
+            -webkit-transition: fill-opacity 0.5s; /* Safari 和 Chrome */
+            -o-transition: fill-opacity 0.5s; /* Opera */
+            vertical-align: middle;
+            fill: #006461;
+            fill-opacity: 0.7;
+        }
+
+            .svg_icon:hover {
+                fill-opacity: 1;
+            }
+
+        .select-editable {
+            position: relative;
+            width: 120px;
+            height: 19px;
+        }
+
+            .select-editable * {
+                position: absolute;
+                top: 5px;
+                left: 0px;
+            }
+
+            .select-editable select {
+                font-size: 14px;
+                border: none;
+                width: 120px;
+                margin: 0;
+                vertical-align: middle;
+                white-space: pre;
+            }
+
+            .select-editable input {
+                width: 100px;
+                padding: 1px;
+                font-size: 12px;
+                border: none;
+                vertical-align: middle;
+            }
+
+                .select-editable select:focus,
+                .select-editable input:focus {
+                    outline: none;
+                }
+    </style>
+</head>
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: none">
+        <symbol id="svg_sendtext" viewBox="0 0 512 512">
+            <path d="M224 387.814v124.186l-192-192 192-192v126.912c223.375 5.24 213.794-151.896 156.931-254.912 140.355 151.707 110.55 394.785-156.931 387.814z"></path>
+        </symbol>
+        <symbol id="svg_resetuno" viewBox="0 0 512 512">
+            <path d="M444.84 83.16c-46.804-51.108-114.077-83.16-188.84-83.16-141.385 0-256 114.615-256 256h48c0-114.875 93.125-208 208-208 61.51 0 116.771 26.709 154.848 69.153l-74.848 74.847h176v-176l-67.16 67.16z"></path>
+            <path d="M464 256c0 114.875-93.125 208-208 208-61.51 0-116.771-26.709-154.847-69.153l74.847-74.847h-176v176l67.16-67.16c46.804 51.108 114.077 83.16 188.84 83.16 141.385 0 256-114.615 256-256h-48z"></path>
+        </symbol>
+    </svg>
+    <div id="msgBar" class="top">
+        <ul style="float: right">
+            <li>
+                <select id="line_ending">
+                    <option>No line ending</option>
+                    <option>Newline</option>
+                    <option>Carriage return</option>
+                    <option>Both NL&CR</option>
+                </select>
+            </li>
+            <li title="send text to uno">
+                <svg id="send" class="svg_icon" onclick="sendmsg()">
+                    <use xlink:href="#svg_sendtext" width="30px" height="30px" transform="translate(0,5)"></use>
+                </svg>
+            </li>
+            <li title="reset uno" onclick="resetUno()">
+                <svg class="svg_icon" id="reset">
+                    <use xlink:href="#svg_resetuno" width="26px" height="26px" transform="translate(0,7)"></use>
+                </svg>
+            </li>
+        </ul>
+        <ul style="float: left">
+            <li>Baudrate:</li>
+            <li>
+                <span class="select-editable">
+                    <select id="BandrateList">
+                        <option>300</option>
+                        <option>1200</option>
+                        <option>2400</option>
+                        <option>4800</option>
+                        <option>9600</option>
+                        <option>14400</option>
+                        <option>19200</option>
+                        <option>28800</option>
+                        <option>38400</option>
+                        <option>57600</option>
+                        <option>74880</option>
+                        <option selected="selected">115200</option>
+                        <option>128000</option>
+                        <option>230400</option>
+                        <option>250000</option>
+                        <option>1000000</option>
+                        <option>2000000</option>
+                    </select>
+                    <input id="SelectBandrate" type="text" />
+                </span>
+            </li>
+            <li>Message:</li>
+        </ul>
+        <ul style="overflow: hidden; display: block">
+            <li>
+                <input id="sendtext" type="text" style="width: 100%" onkeypress="sendIfEnter(event)" />
+            </li>
+        </ul>
+
+    </div>
+    <div id="msgDiv" class="main" style="background-color: darkgray">
+    </div>
+    <script>
+        var updateBaudrate = function (baudrate) {
+            var getBaudrate = new XMLHttpRequest();
+
+            getBaudrate.onload = function () {
+                document.getElementById("SelectBandrate").value = this.responseText;
+            };
+            var hostString = '/getbaudrate';
+            if (baudrate) parseInt(baudrate, 10);
+            if (baudrate) {
+                hostString += "?baudrate=" + baudrate;
+            }
+            getBaudrate.open('GET', hostString);
+            getBaudrate.send();
+        }
+
+        document.getElementById("SelectBandrate").onchange = function () {
+            updateBaudrate(this.value);
+        }
+
+        document.getElementById("BandrateList").onchange = function () {
+            if (document.getElementById("SelectBandrate").value != this.value) {
+                document.getElementById("SelectBandrate").value = this.value;
+                document.getElementById("SelectBandrate").onchange();
+            }
+        };
+        document.getElementById("BandrateList").onclick = function () {
+            document.getElementById("BandrateList").selectedIndex = -1;
+        };
+
+        updateBaudrate();
+
+        var resetUno = function () {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/log/reset', false);
+            xhr.send();
+        };
+        var ip_addr = document.location.hostname;
+        var socket = new WebSocket('ws://' + ip_addr + ':81/', ['arduino']);
+        socket.onopen = function (event) {
+            document.getElementById("msgDiv").style.cssText = "";
+            document.title = "Serial Monitor at " + document.location.hostname;
+        };
+        socket.onmessage = function (event) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var rxdata = reader.result;
+                var el = document.getElementById("msgDiv");
+                var scroll = el.scrollHeight - el.clientHeight - el.scrollTop;
+                var chile = document.createElement("span");
+                chile.innerText = rxdata;
+                el.appendChild(chile);
+                if (scroll < chile.offsetHeight * 1.5) {
+                    if (el.childNodes.length > 300) {
+                        while (el.childNodes.length > 200) el.removeChild(el.childNodes[0]);
+                    }
+                    el.scrollTop = el.scrollHeight;
+                };
+            }
+            reader.readAsText(event.data);
+        };
+        socket.onclose = function (event) {
+            document.getElementById("msgDiv").style.cssText = "background-color:darkgray";
+            document.title = "Serial Monitor Disconnected";
+        };
+        socket.onerror = function (event) {
+            document.getElementById("msgDiv").style.cssText = "background-color:darkgray";
+            document.title = "Serial Monitor Disconnected";
+        };
+        var sendmsg = function () {
+            var text = document.getElementById("sendtext").value;
+            var line_ending = document.getElementById("line_ending").value;
+            if (!text) return;
+            switch (line_ending) {
+                case "Newline":
+                    text += "\n";
+                    break;
+                case "Carriage return":
+                    text += "\r";
+                    break;
+                case "Both NL&CR":
+                    text += "\n\r";
+            }
+            if (socket.readyState == 1) socket.send(text);
+            document.getElementById("sendtext").focus();
+            document.getElementById("sendtext").select();
+        };
+        var sendIfEnter = function (event) {
+            if (event.keyCode == 13) {
+                sendmsg();
+            }
+        };
+    </script>
+</body>
+</html>
+
