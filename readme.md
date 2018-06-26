@@ -53,6 +53,7 @@ No matter how you connect, they are all equivalent
 + Click Verify on Arduino IDE,Make sure you see **done compiling**, then continue
 + upload this project to ESP8266 via Serial port
  You need a UNO, don't switch on the power first,Connect them like this
+
     | ESP-01S | UNO         |
     | :-----: | :---------: |
     | RX      | RX          |
@@ -61,7 +62,8 @@ No matter how you connect, they are all equivalent
     | GND     | GND         |
     | 3V3     | 3V3         |
     |         | Reset-->GND |
-    Now connect UNO and computer via USB.Since we connect UNO's Reset to GND, UNO is now bypassed.Esp-01's IO0 is connected to GND, so ESP01 enters the bootloader,use arduino IDE to upload the program will enter esp-01
+    
+    Now connect UNO and computer via USB.Since we connect UNO's Reset to GND, UNO is now bypassed.Esp-01's IO0 is connected to GND, so ESP01 enters the bootloader,use arduino IDE to upload the program will enter esp-01  
   + Tool->Board->**Generic ESP8266 Module**
   + Tool->Flash Size->**1M(no SPIFFS)**
   + Tool->Port->**your serial com port**
