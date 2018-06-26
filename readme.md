@@ -12,14 +12,14 @@ you can:
 + TCP channel(oseppBlock) and up to five WebSocket connections(Browser) receive data at the same time from the uno serial port
 + Control your robot using a web browser on any device anywhere
 
-![ ](img/espcon1.png)
+![ ](img/espcon1.PNG)
 
 ESP8266 will have two IP addresses,depending on your network connection
 If your esp8266 is connected to the router and your device is also connected to the router, then you should access it with the IP address assigned by the router to ESP8266. The format of the IP address is usually 192.168.1.?
 If your device accesses ESP8266's WIFI access point then you should use 192.168.4.1 to access it
 No matter how you connect, they are all equivalent
 
-![ ](img/espcon2.png)
+![ ](img/espcon2.PNG)
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
 
