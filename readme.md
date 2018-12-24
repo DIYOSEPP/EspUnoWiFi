@@ -50,7 +50,6 @@ No matter how you connect, they are all equivalent
 + Set your router SSID and password in the sketch(*You can skip this step and then setting it in web browser*)  
  `const char default_router_ssid[] = "YourRouterSSID";//your router ssid`  
  `const char default_router_pswd[] = "YourRouterPassword";//your router password`
-+ Click Verify on Arduino IDE,Make sure you see **done compiling**, then continue
 + upload this project to ESP8266 via Serial port
  You need a UNO, don't switch on the power first,Connect them like this
 
@@ -68,13 +67,13 @@ No matter how you connect, they are all equivalent
   + Tool->Flash Size->**1M(no SPIFFS)**
   + Tool->Port->**your serial com port**
   + click **upload**
-  + If you fail, it may be that esp8266 does not enter bootloader mode, unplug the USB, inserts it again after about 10 seconds, and then uploads
+  + If you fail, it may be that esp8266 does not enter bootloader mode, unplug the 3V3 from Uno, inserts it again after about 3 seconds, and then **upload** again
 
 ## 2. setup Access point & connect to your router
 
 If you have already set the router SSID and password in step 1, you can skip this step
 
-+ Connect the power supply for ESP8266
++ Connect the power supply for ESP8266(just 3v3,gnd,rx,tx)
 + Log in to the access point **WIFI-ESP-SERIAL-xxxxxx** with any wifi-capable device and use the password **oseppesp**
 + Use a web browser to open URL: <http://192.168.4.1/netstat>
 + Select **your router access point** at `WIFI SSID` and fill your router  password in `WIFI Password` and chick nearby **update** button,esp8266 will restart so you will lose wifi connection,Wait a moment then re-Connect to the access point open URL: <http://192.168.4.1/netstat> again.For unknown reasons, usually you will see the IP address is 0.0.0.0, then you need to manually reset the ESP8266 to make it connect to the route correctly...
