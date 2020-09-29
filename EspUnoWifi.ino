@@ -852,9 +852,12 @@ int sigleRecord(uint8_t *data, int len) {
 
 uint8_t lineBuff[128];
 int handleHex(WiFiClient client, int hexlen) {
+    while (client.connected() && client.available() == 0) {
+        delay(1);
+    }
     if (client.read() != ':') return 0;
     int totalLen = 0;
-    address = 0;
+    address = -1;
     baseaddr = 0;
     dity = 0;
     total_write = 0;
@@ -869,11 +872,14 @@ int handleHex(WiFiClient client, int hexlen) {
         int rl = client.readBytesUntil(
             ':', lineBuff,
             min((int)sizeof(lineBuff) - 1, hexlen - totalLen - 1));
-        if (rl < 10) return totalLen;
-        if (rl & 1) return totalLen;
-        lineBuff[rl] = 0;
+        int dlen = rl;
+        if (dlen < 10) break;
+        if (lineBuff[rl - 1] == '\n') dlen--;
+        if (lineBuff[rl - 2] == '\r') dlen--;
+        if (dlen < 10) break;
+        if (dlen & 1) break;
         totalLen += rl + 1;
-        if (sigleRecord(lineBuff, rl)) break;
+        if (sigleRecord(lineBuff, dlen)) break;
     }
     return totalLen;
 }
